@@ -10,12 +10,11 @@
 ))]
 
 use core::arch::asm;
-use core::convert::TryFrom;
 
 pub mod base;
+pub mod legacy;
 pub mod srst;
 pub mod time;
-pub mod legacy;
 
 /// A raw value returned from an SBI call.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
@@ -28,7 +27,6 @@ pub struct Ret {
 
 impl From<Ret> for Result<usize, StandardError> {
     fn from(ret: Ret) -> Self {
-        use core::convert::TryInto;
         if let Ok(error) = ret.error.try_into() {
             Err(error)
         } else {
@@ -78,7 +76,7 @@ const NUM_ARGS: usize = 6;
 /// the individual modules of this crate.
 ///
 /// # Safety
-/// The behavior of this function is undefined if it is not used to make 
+/// The behavior of this function is undefined if it is not used to make
 /// SBI-conforming calls.
 #[inline(always)]
 pub fn ecall(eid: u32, fid: u32, args: [usize; NUM_ARGS]) -> Ret {
