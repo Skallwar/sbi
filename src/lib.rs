@@ -1,6 +1,6 @@
 #![doc = include_str!("../README.md")]
 #![no_std]
-#![feature(asm, never_type)]
+#![feature(never_type)]
 #![warn(missing_docs)]
 #![cfg(any(
     target_arch = "riscv32",
@@ -9,6 +9,7 @@
     doc,
 ))]
 
+use core::arch::asm;
 use core::convert::TryFrom;
 
 pub mod base;
